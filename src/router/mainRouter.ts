@@ -9,10 +9,10 @@ import { createMemoryHistory, createRouter } from 'vue-router'
 
 const routes = [
   { path: '/', component: ShopView },
-  { path: '/Purchases', component: PurchasedView },
-  { path: '/Cart', component: CartView },
-  { path: '/Register', component: RegisterView },
-  { path: '/Login', component: LoginView },
+  { path: '/purchased', component: PurchasedView },
+  { path: '/cart', component: CartView },
+  { path: '/register', component: RegisterView },
+  { path: '/login', component: LoginView },
 ]
 
 export const router = createRouter({
