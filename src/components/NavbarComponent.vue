@@ -73,6 +73,11 @@ const items = computed(() => {
       label: 'Tienda',
       icon: 'pi pi-shopping-bag',
       route: '/'
+    },
+    {
+      label: 'Carrito',
+      icon: 'pi pi-shopping-cart',
+      route: '/cart'
     }
   ]
   
@@ -84,12 +89,6 @@ const items = computed(() => {
       route: '/purchased'
     })
   }
-  
-  menuItems.push({
-    label: 'Carrito',
-    icon: 'pi pi-shopping-cart',
-    route: '/cart'
-  })
   
   return menuItems
 })

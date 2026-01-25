@@ -11,9 +11,13 @@
           <li><RouterLink to="/"><i class="pi pi-home"></i> Inicio</RouterLink></li>
           <li><RouterLink to="/"><i class="pi pi-shopping-bag"></i> Tienda</RouterLink></li>
           <li><RouterLink to="/cart"><i class="pi pi-shopping-cart"></i> Carrito</RouterLink></li>
-          <li><RouterLink to="/login"><i class="pi pi-user"></i> Login</RouterLink></li>
-          <li><RouterLink to="/register"><i class="pi pi-user-plus"></i> Registro</RouterLink></li>
-<li v-if="isAuthenticated()"><RouterLink to="/purchased"><i class="pi pi-history"></i> Mis Compras</RouterLink></li>
+          <!-- Login y Registro solo visibles si NO está logueado -->
+          <li v-if="!isLoggedIn"><RouterLink to="/login"><i class="pi pi-user"></i> Login</RouterLink></li>
+          <li v-if="!isLoggedIn"><RouterLink to="/register"><i class="pi pi-user-plus"></i> Registro</RouterLink></li>
+          <!-- Logout solo visible si está logueado -->
+          <li v-if="isLoggedIn"><RouterLink to="/" @click="handleLogout"><i class="pi pi-sign-out"></i> Logout</RouterLink></li>
+          <!-- Mis Compras solo visible si está logueado -->
+          <li v-if="isLoggedIn"><RouterLink to="/purchased"><i class="pi pi-history"></i> Mis Compras</RouterLink></li>
         </ul>
       </div>
       
@@ -88,11 +92,25 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { RouterLink } from 'vue-router'
-import { isAuthenticated } from '@/composables/authComposable'
+import { RouterLink, useRouter } from 'vue-router'
+import { isAuthenticated, clearSession } from '@/composables/authComposable'
+import { useCartStore } from '@/stores/cartStore'
+
+const router = useRouter()
+const cartStore = useCartStore()
 
 // Año actual para el copyright
 const currentYear = computed(() => new Date().getFullYear())
+
+// Verificar si está logueado
+const isLoggedIn = computed(() => isAuthenticated())
+
+// Manejar logout
+function handleLogout() {
+  clearSession()
+  cartStore.clearCart()
+  router.push('/')
+}
 </script>
 
 <style scoped>

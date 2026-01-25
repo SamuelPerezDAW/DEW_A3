@@ -63,7 +63,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import DataView from 'primevue/dataview'
 import Dropdown from 'primevue/dropdown'
 import Button from 'primevue/button'
@@ -71,6 +71,7 @@ import Tag from 'primevue/tag'
 import Toast from 'primevue/toast'
 import ProductCardComponent from '@/components/ProductCardComponent.vue'
 import { useCartStore } from '@/stores/cartStore'
+import { getSearchQuery } from '@/composables/searchComposable'
 
 // Importar productos
 import productsData from '@/data/dataProductsShop.json'
@@ -92,10 +93,17 @@ interface Product {
 const products = ref<Product[]>(productsData as Product[])
 const loading = ref(false)
 const selectedCategory = ref<string | null>(null)
-const searchQuery = ref('')
+
+// Usar el composable para la búsqueda
+const searchQuery = ref(getSearchQuery())
 
 // Store del carrito
 const cartStore = useCartStore()
+
+// Watch para sincronizar con el composable de búsqueda
+watch(() => getSearchQuery(), (newValue) => {
+  searchQuery.value = newValue
+})
 
 // Categorías disponibles
 const categories = [

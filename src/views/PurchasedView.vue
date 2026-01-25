@@ -88,46 +88,63 @@
 
 <script setup lang="ts">
 import { computed, onMounted } from 'vue'
-import { RouterLink } from 'vue-router'
+import { RouterLink, useRouter } from 'vue-router'
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
 import Card from 'primevue/card'
 import Button from 'primevue/button'
 import Toast from 'primevue/toast'
 import { useCartStore, type PurchaseRecord } from '@/stores/cartStore'
+import { isAuthenticated } from '@/composables/authComposable'
 
+const router = useRouter()
 const cartStore = useCartStore()
 
 // Obtener historial de compras como propiedad reactiva
 const purchasedHistory = computed(() => cartStore.getHistory())
 
-// Inicializar store
+// Inicializar store y verificar autenticación
 onMounted(() => {
   cartStore.init()
+  
+  // Verificar si está logueado, si no redirigir al login
+  if (!isAuthenticated()) {
+    router.push('/login')
+    return
+  }
 })
+
+
+// Interfaz para grupo de historial
+interface HistoryGroup {
+  fecha: string
+  items: PurchaseRecord[]
+  total: number
+}
 
 // Historial agrupado por fecha de compra
 const groupedHistory = computed(() => {
   const history = cartStore.getHistory()
-  const groups: Record<string, { fecha: string; items: PurchaseRecord[]; total: number }> = {}
+  const groups = new Map<string, HistoryGroup>()
   
   history.forEach(item => {
     const dateKey = item.fechaCompra.split('T')[0]
     
-    if (!groups[dateKey]) {
-      groups[dateKey] = {
+    let group = groups.get(dateKey)
+    if (!group) {
+      group = {
         fecha: dateKey,
         items: [],
         total: 0
       }
+      groups.set(dateKey, group)
     }
     
-    const group = groups[dateKey]
     group.items.push(item)
     group.total += item.precioUnitario * item.cantidad
   })
   
-  return Object.values(groups).sort((a, b) => 
+  return Array.from(groups.values()).sort((a, b) => 
     new Date(b.fecha).getTime() - new Date(a.fecha).getTime()
   )
 })

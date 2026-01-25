@@ -49,16 +49,20 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed } from 'vue'
 import InputText from 'primevue/inputtext'
 import NavbarComponent from './NavbarComponent.vue'
+import { getSearchQuery, setSearchQuery } from '@/composables/searchComposable'
 
-// Variable reactiva para el búsqueda
-const searchQuery = ref('')
+// Variable reactiva para la búsqueda (sincronizada con el composable)
+const searchQuery = computed({
+  get: () => getSearchQuery(),
+  set: (value) => setSearchQuery(value)
+})
 
-// Evento de búsqueda (emitir al padre para filtrar)
+// Evento de búsqueda
 function onSearch() {
-  // El componente padre puede escuchar este evento o usar watch
+  // El composable actualiza el valor y ShopView puede reaccionar
 }
 </script>
 
