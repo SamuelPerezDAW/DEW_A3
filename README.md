@@ -1,70 +1,172 @@
-# pytoBaseVueVacio
+# 🍰 Dulce Tentación - Tienda de Pasteles y Dulces Artesanales
 
-This template should help get you started developing with Vue 3 in Vite.
+Tienda online de pasteles y dulces artesanales desarrollada con Vue 3, TypeScript y PrimeVue. Proyecto académico que simula un comercio electrónico completo con gestión de usuarios, carrito de compras e historial de pedidos.
 
-## Recommended IDE Setup
+## 🛠️ Tecnologías Utilizadas
 
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+- **Vue.js 3** - Framework principal
+- **TypeScript** - Tipado estático
+- **Vite** - Herramienta de construcción rápida
+- **Pinia** - Gestión de estado (carrito de compras)
+- **Vue Router** - Navegación entre vistas
+- **PrimeVue 4** - Componentes UI
+- **PrimeFlex** - Utilidades CSS
+- **LocalStorage** - Almacenamiento de usuarios e historial
+- **SessionStorage** - Gestión de sesión y carrito de invitados
 
-## Recommended Browser Setup
+## 📁 Estructura del Proyecto
 
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd) 
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
-
-## Type Support for `.vue` Imports in TS
-
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vite.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
+```
+Proyecto/
+├── index.html
+├── public/
+│   └── assets/
+│       └── images/          # Imágenes de productos
+├── src/
+│   ├── main.ts              # Punto de entrada
+│   ├── App.vue              # Componente raíz
+│   ├── data/
+│   │   └── dataProductsShop.json  # Productos de la tienda
+│   ├── stores/
+│   │   └── cartStore.ts     # Store Pinia del carrito
+│   ├── router/
+│   │   └── mainRouter.ts    # Configuración de rutas
+│   ├── views/
+│   │   ├── ShopView.vue     # Vista principal de la tienda
+│   │   ├── CartView.vue     # Carrito de compras
+│   │   ├── LoginView.vue    # Inicio de sesión
+│   │   ├── RegisterView.vue # Registro de usuarios
+│   │   └── PurchasedView.vue # Historial de compras
+│   ├── components/
+│   │   ├── NavbarComponent.vue       # Barra de navegación
+│   │   ├── HeaderComponent.vue       # Cabecera con búsqueda
+│   │   ├── FooterComponent.vue       # Pie de página
+│   │   └── ProductCardComponent.vue  # Tarjeta de producto
+│   └── composables/
+│       └── authComposable.ts # Lógica de autenticación
 ```
 
-### Compile and Hot-Reload for Development
+## 🚀 Instalación y Puesta en Marcha
 
-```sh
-npm run dev
-```
+### Prerrequisitos
 
-### Type-Check, Compile and Minify for Production
+- Node.js (versión 20.19.0 o superior, o 22.12.0+)
+- npm (incluido con Node.js)
 
-```sh
-npm run build
-```
+### Pasos de Instalación
 
-### Run Unit Tests with [Vitest](https://vitest.dev/)
+1. **Clonar o acceder al proyecto**
+   ```bash
+   cd /home/jose/DEW_A3
+   ```
 
-```sh
-npm run test:unit
-```
+2. **Instalar dependencias**
+   ```bash
+   npm install
+   ```
 
-### Run End-to-End Tests with [Cypress](https://www.cypress.io/)
+3. **Ejecutar el servidor de desarrollo**
+   ```bash
+   npm run dev
+   ```
 
-```sh
-npm run test:e2e:dev
-```
+4. **Abrir en el navegador**
+   - La aplicación estará disponible en: `http://localhost:5173`
 
-This runs the end-to-end tests against the Vite development server.
-It is much faster than the production build.
+### Comandos Disponibles
 
-But it's still recommended to test the production build with `test:e2e` before deploying (e.g. in CI environments):
+| Comando | Descripción |
+|---------|-------------|
+| `npm run dev` | Inicia el servidor de desarrollo |
+| `npm run build` | Compila para producción |
+| `npm run preview` | Previsualiza la versión de producción |
+| `npm run type-check` | Verifica tipos TypeScript |
+| `npm run lint` | Corrige errores de linting |
+| `npm run format` | Formatea el código con Prettier |
+| `npm run test:unit` | Ejecuta tests unitarios |
+| `npm run test:e2e` | Ejecuta tests end-to-end |
 
-```sh
-npm run build
-npm run test:e2e
-```
+## 📋 Funcionalidades
 
-### Lint with [ESLint](https://eslint.org/)
+### 👤 Gestión de Usuarios
 
-```sh
-npm run lint
-```
+- **Registro**: Creación de cuenta con validación de:
+  - Nombre de usuario (3-20 caracteres, letras/números)
+  - Correo electrónico (formato válido, máx. 100 caracteres)
+  - Contraseña (6-12 caracteres, 1 mayúscula, 1 especial)
+  - Almacenamiento con hash SHA-256
+
+- **Login**: Autenticación de usuarios registrados
+- **Logout**: Cierre de sesión
+- **Protección de rutas**: Compras solo visibles para usuarios autenticados
+
+### 🛒 Carrito de Compras
+
+- **Usuarios registrados**: Carrito almacenado en LocalStorage
+- **Usuarios no registrados**: Carrito almacenado en SessionStorage
+- **Añadir productos**: Contador de clics (1 clic = 1 unidad)
+- **Gestión de cantidades**: Incrementar/disminuir/eliminar
+- **Cálculo automático**:
+  - Subtotal
+  - IGIC (7%)
+  - Total final
+
+### 📦 Productos
+
+- Catálogo de productos en JSON
+- Imágenes de productos
+- Stock disponible
+- Búsqueda por nombre/descripción
+- Cards con información completa
+
+### 📄 Historial de Compras
+
+- Solo disponible para usuarios autenticados
+- Almacenamiento en LocalStorage por usuario
+- Agrupado por fecha de compra
+- Resumen de pedidos, productos y gasto total
+
+## 🎨 Diseño
+
+- **Temática**: Pastelería/Dulces "Dulce Tentación"
+- **Colores principales**: Púrpura (#8e44ad), Rosa (#ff69b4)
+- **Componentes**: PrimeVue con tema Material
+- **Responsive**: Diseño adaptativo para móviles
+
+## 🔒 Almacenamiento
+
+### LocalStorage
+
+| Clave | Descripción |
+|-------|-------------|
+| `DataUsers` | Base de datos de usuarios registrados |
+| `{email}CartStore` | Carrito de usuarios autenticados |
+| `{email}HistoryPurchased` | Historial de compras |
+
+### SessionStorage
+
+| Clave | Descripción |
+|-------|-------------|
+| `ShopSession` | Sesión actual del usuario |
+| `GuestCartStore` | Carrito de usuarios no registrados |
+
+## 📝 Notas de Desarrollo
+
+- Los productos se cargan desde `src/data/dataProductsShop.json`
+- Las imágenes deben ubicarse en `public/assets/images/`
+- Para añadir más productos, editar el JSON con la estructura:
+  ```json
+  {
+    "id": 9,
+    "nombreProducto": "Nombre del producto",
+    "rutaRelativaImagen": "/assets/images/nombre.jpg",
+    "descripcionProducto": "Descripción del producto",
+    "stock": 20,
+    "precioUnitario": 3.50
+  }
+  ```
+
+## 📄 Licencia
+
+Este proyecto es académico y de uso educativo.
+

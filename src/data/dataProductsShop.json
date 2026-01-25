@@ -1,0 +1,67 @@
+[
+  {
+    "id": 1,
+    "nombreProducto": "Rosquillas de Anis",
+    "rutaRelativaImagen": "/assets/images/rosquillas.jpg",
+    "descripcionProducto": "Tradicionales rosquillas de anis caseras, crujientes por fuera y tiernas por dentro.",
+    "stock": 50,
+    "precioUnitario": 2.50
+  },
+  {
+    "id": 2,
+    "nombreProducto": "Pestiños",
+    "rutaRelativaImagen": "/assets/images/pestinos.jpg",
+    "descripcionProducto": "Dulces fritos bañados en miel y decorate con almendras.",
+    "stock": 30,
+    "precioUnitario": 3.00
+  },
+  {
+    "id": 3,
+    "nombreProducto": "Flan de Huevo",
+    "rutaRelativaImagen": "/assets/images/flan.jpg",
+    "descripcionProducto": "Flan casero de huevo con caramelo líquido natural.",
+    "stock": 25,
+    "precioUnitario": 2.00
+  },
+  {
+    "id": 4,
+    "nombreProducto": "Tarta de Queso",
+    "rutaRelativaImagen": "/assets/images/tartaqueso.jpg",
+    "descripcionProducto": "Cremosa tarta de queso con base de galleta y mermelma de frutos rojos.",
+    "stock": 15,
+    "precioUnitario": 5.50
+  },
+  {
+    "id": 5,
+    "nombreProducto": "Magdalenas Caseras",
+    "rutaRelativaImagen": "/assets/images/magdalenas.jpg",
+    "descripcionProducto": "Magdalenas caseras con pepitas de chocolate natural.",
+    "stock": 40,
+    "precioUnitario": 1.80
+  },
+  {
+    "id": 6,
+    "nombreProducto": "Polvorones",
+    "rutaRelativaImagen": "/assets/images/polvorones.jpg",
+    "descripcionProducto": "Polvorones artesanales de almendra y canela.",
+    "stock": 35,
+    "precioUnitario": 2.20
+  },
+  {
+    "id": 7,
+    "nombreProducto": "Buñuelos de Viento",
+    "rutaRelativaImagen": "/assets/images/bunuelos.jpg",
+    "descripcionProducto": "Buñuelos ligeros rellenos de crema pastelera.",
+    "stock": 20,
+    "precioUnitario": 2.80
+  },
+  {
+    "id": 8,
+    "nombreProducto": "Tarta de Manzana",
+    "rutaRelativaImagen": "/assets/images/tartamanzana.jpg",
+    "descripcionProducto": "Tarta de manzana caramelizada con canela y masa quebrada casera.",
+    "stock": 12,
+    "precioUnitario": 4.50
+  }
+]
+
