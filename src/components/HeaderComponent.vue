@@ -17,18 +17,18 @@
       </Menubar>
     </div>
   </template>
-  
+
   <script setup lang="ts">
   import { ref } from 'vue'
   import { Menubar } from 'primevue'
   import Ripple from 'primevue/ripple'
   import { RouterLink } from 'vue-router'
-  
+
   const vRipple = Ripple
-  
+
   const items = ref([
     {
-      label: 'Home',
+      label: 'Sobre_mi',
       icon: 'pi pi-palette',
       route: '/',
     },
@@ -39,4 +39,3 @@
     },
   ])
   </script>
-  

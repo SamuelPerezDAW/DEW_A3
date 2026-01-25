@@ -1,5 +1,5 @@
 import { createApp } from 'vue'
-import { router } from '../src/router/index'
+import { router } from './router/mainRouter'
 import { createPinia } from 'pinia'
 import PrimeVue from 'primevue/config'
 import Material from '../node_modules/@primeuix/themes/dist/material'
