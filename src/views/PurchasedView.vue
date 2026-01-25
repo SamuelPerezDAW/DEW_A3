@@ -9,7 +9,7 @@
 
     <div class="purchased-content">
       <!-- Sin historial -->
-      <div v-if="history.length === 0" class="empty-history">
+      <div v-if="purchasedHistory.length === 0" class="empty-history">
         <i class="pi pi-shopping-bag"></i>
         <h2>No tienes compras aún</h2>
         <p>¡Haz tu primera compra en nuestra tienda!</p>
@@ -98,6 +98,9 @@ import { useCartStore, type PurchaseRecord } from '@/stores/cartStore'
 
 const cartStore = useCartStore()
 
+// Obtener historial de compras como propiedad reactiva
+const purchasedHistory = computed(() => cartStore.getHistory())
+
 // Inicializar store
 onMounted(() => {
   cartStore.init()
@@ -119,8 +122,9 @@ const groupedHistory = computed(() => {
       }
     }
     
-    groups[dateKey].items.push(item)
-    groups[dateKey].total += item.precioUnitario * item.cantidad
+    const group = groups[dateKey]
+    group.items.push(item)
+    group.total += item.precioUnitario * item.cantidad
   })
   
   return Object.values(groups).sort((a, b) => 

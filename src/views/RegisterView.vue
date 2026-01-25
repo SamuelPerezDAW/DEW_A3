@@ -112,7 +112,8 @@ import Password from 'primevue/password'
 import Button from 'primevue/button'
 import Message from 'primevue/message'
 import Toast from 'primevue/toast'
-import { saveUser, validateNombreUsuario, validateCorreoElectronico, validatePassword } from '@/composables/authComposable'
+import { saveUser } from '@/composables/authComposable'
+import { validateNombreUsuario as validateNombreUsuarioFn, validateCorreoElectronico as validateCorreoElectronicoFn, validatePassword as validatePasswordFn } from '@/composables/authComposable'
 
 const router = useRouter()
 
@@ -140,7 +141,7 @@ const errorMessage = ref('')
 function validateNombreUsuario() {
   if (!form.nombreUsuario.trim()) {
     errors.nombreUsuario = 'El nombre de usuario es obligatorio'
-  } else if (!validateNombreUsuario(form.nombreUsuario)) {
+  } else if (!validateNombreUsuarioFn(form.nombreUsuario)) {
     errors.nombreUsuario = '3-20 caracteres, solo letras, números y espacios'
   } else {
     errors.nombreUsuario = ''
@@ -151,7 +152,7 @@ function validateNombreUsuario() {
 function validateCorreoElectronico() {
   if (!form.correoElectronico.trim()) {
     errors.correoElectronico = 'El correo electrónico es obligatorio'
-  } else if (!validateCorreoElectronico(form.correoElectronico)) {
+  } else if (!validateCorreoElectronicoFn(form.correoElectronico)) {
     errors.correoElectronico = 'Correo electrónico no válido o muy largo'
   } else {
     errors.correoElectronico = ''
@@ -162,7 +163,7 @@ function validateCorreoElectronico() {
 function validatePassword() {
   if (!form.password) {
     errors.password = 'La contraseña es obligatoria'
-  } else if (!validatePassword(form.password)) {
+  } else if (!validatePasswordFn(form.password)) {
     errors.password = 'No cumple los requisitos mínimos'
   } else {
     errors.password = ''

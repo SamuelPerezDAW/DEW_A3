@@ -13,7 +13,7 @@
           <li><RouterLink to="/cart"><i class="pi pi-shopping-cart"></i> Carrito</RouterLink></li>
           <li><RouterLink to="/login"><i class="pi pi-user"></i> Login</RouterLink></li>
           <li><RouterLink to="/register"><i class="pi pi-user-plus"></i> Registro</RouterLink></li>
-          <li v-if="isAuthenticated"><RouterLink to="/purchased"><i class="pi pi-history"></i> Mis Compras</RouterLink></li>
+<li v-if="isAuthenticated()"><RouterLink to="/purchased"><i class="pi pi-history"></i> Mis Compras</RouterLink></li>
         </ul>
       </div>
       
