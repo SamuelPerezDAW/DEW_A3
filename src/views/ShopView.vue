@@ -1,6 +1,5 @@
 <template>
   <div class="shop-view">
-    <!-- Hero Section -->
     <div class="hero-section">
       <div class="hero-content">
         <h1>
@@ -11,36 +10,34 @@
       </div>
     </div>
 
-    <!-- Filters -->
     <div class="filters-section">
       <div class="filter-group">
         <label><i class="pi pi-filter"></i> Filtrar por:</label>
-        <Dropdown 
-          v-model="selectedCategory" 
-          :options="categories" 
-          placeholder="Todas las categorías" 
+        <Dropdown
+          v-model="selectedCategory"
+          :options="categories"
+          placeholder="Todas las categorías"
           showClear
           class="filter-dropdown"
         />
       </div>
       <div class="search-results" v-if="searchQuery">
         <Tag severity="info" :value="`Resultados para: ${searchQuery}`" />
-        <Button 
-          icon="pi pi-times" 
-          text 
+        <Button
+          icon="pi pi-times"
+          text
           @click="clearSearch"
           aria-label="Limpiar búsqueda"
         />
       </div>
     </div>
 
-    <!-- Products Grid -->
     <div class="products-container">
       <DataView :value="filteredProducts" layout="grid" :loading="loading">
         <template #grid="slotProps">
           <div class="products-grid">
             <div v-for="product in slotProps.items" :key="product.id" class="product-grid-item">
-              <ProductCardComponent 
+              <ProductCardComponent
                 :product="product"
                 @add-to-cart="handleAddToCart"
               />
@@ -57,7 +54,6 @@
       </DataView>
     </div>
 
-    <!-- Toast para notificaciones -->
     <Toast position="bottom-right" />
   </div>
 </template>
@@ -73,12 +69,8 @@ import ProductCardComponent from '@/components/ProductCardComponent.vue'
 import { useCartStore } from '@/stores/cartStore'
 import { getSearchQuery } from '@/composables/searchComposable'
 
-// Importar productos
 import productsData from '@/data/dataProductsShop.json'
 
-/**
- * Interfaz de producto
- */
 interface Product {
   id: number
   nombreProducto: string
@@ -89,41 +81,33 @@ interface Product {
   categoria?: string
 }
 
-// Referencias reactivas
 const products = ref<Product[]>(productsData as Product[])
 const loading = ref(false)
 const selectedCategory = ref<string | null>(null)
 
-// Usar el composable para la búsqueda
 const searchQuery = ref(getSearchQuery())
 
-// Store del carrito
 const cartStore = useCartStore()
 
-// Watch para sincronizar con el composable de búsqueda
 watch(() => getSearchQuery(), (newValue) => {
   searchQuery.value = newValue
 })
 
-// Categorías disponibles
 const categories = [
   { label: 'Dulces Tradicionales', value: 'tradicional' },
   { label: 'Tartas', value: 'tarta' },
   { label: ' Magdalenas y Repostería', value: 'reposteria' }
 ]
 
-// Productos filtrados
 const filteredProducts = computed(() => {
   let result = products.value
-  
-  // Filtrar por categoría
+
   if (selectedCategory.value) {
-    result = result.filter(p => 
+    result = result.filter(p =>
       p.nombreProducto.toLowerCase().includes(selectedCategory.value!.toLowerCase())
     )
   }
-  
-  // Filtrar por búsqueda
+
   if (searchQuery.value.trim()) {
     const query = searchQuery.value.toLowerCase()
     result = result.filter(p =>
@@ -131,21 +115,18 @@ const filteredProducts = computed(() => {
       p.descripcionProducto.toLowerCase().includes(query)
     )
   }
-  
+
   return result
 })
 
-// Manejar añadir al carrito
 function handleAddToCart(product: Product) {
   cartStore.addToCart(product)
 }
 
-// Limpiar búsqueda
 function clearSearch() {
   searchQuery.value = ''
 }
 
-// Cargar productos al montar
 onMounted(() => {
   cartStore.init()
 })
@@ -274,17 +255,17 @@ onMounted(() => {
     font-size: 1.8rem;
     flex-direction: column;
   }
-  
+
   .filters-section {
     flex-direction: column;
     align-items: stretch;
   }
-  
+
   .filter-group {
     flex-direction: column;
     align-items: stretch;
   }
-  
+
   .products-grid {
     grid-template-columns: 1fr;
   }

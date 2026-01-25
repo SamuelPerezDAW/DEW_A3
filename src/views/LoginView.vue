@@ -8,19 +8,18 @@
             <h2>Iniciar Sesión</h2>
           </div>
         </template>
-        
+
         <template #subtitle>
           <p>Accede a tu cuenta y descubre ofertas exclusivas</p>
         </template>
-        
+
         <template #content>
           <form @submit.prevent="handleLogin" class="login-form">
-            <!-- Correo electrónico -->
             <div class="form-field">
               <label for="correoElectronico">Correo Electrónico</label>
-              <InputText 
+              <InputText
                 id="correoElectronico"
-                v-model="form.correoElectronico" 
+                v-model="form.correoElectronico"
                 :class="{ 'p-invalid': errors.correoElectronico }"
                 placeholder="tu@email.com"
                 @blur="clearError('correoElectronico')"
@@ -28,12 +27,11 @@
               <small v-if="errors.correoElectronico" class="p-error">{{ errors.correoElectronico }}</small>
             </div>
 
-            <!-- Contraseña -->
             <div class="form-field">
               <label for="password">Contraseña</label>
-              <Password 
+              <Password
                 id="password"
-                v-model="form.password" 
+                v-model="form.password"
                 :class="{ 'p-invalid': errors.password }"
                 placeholder="Tu contraseña"
                 :feedback="false"
@@ -43,22 +41,20 @@
               <small v-if="errors.password" class="p-error">{{ errors.password }}</small>
             </div>
 
-            <!-- Mensaje de error general -->
             <Message v-if="errorMessage" severity="error" :closable="false">
               {{ errorMessage }}
             </Message>
 
-            <!-- Botón de login -->
-            <Button 
-              type="submit" 
-              label="Iniciar Sesión" 
+            <Button
+              type="submit"
+              label="Iniciar Sesión"
               icon="pi pi-sign-in"
               class="login-button"
               :loading="loading"
             />
           </form>
         </template>
-        
+
         <template #footer>
           <div class="login-footer">
             <p>¿No tienes cuenta? <RouterLink to="/register">Regístrate</RouterLink></p>
@@ -67,14 +63,12 @@
       </Card>
     </div>
 
-    <!-- Toast para notificaciones -->
     <Toast position="bottom-right" />
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
-import { useRouter } from 'vue-router'
 import Card from 'primevue/card'
 import InputText from 'primevue/inputtext'
 import Password from 'primevue/password'
@@ -83,33 +77,26 @@ import Message from 'primevue/message'
 import Toast from 'primevue/toast'
 import { validateCredentials, createSession, getCurrentSession } from '@/composables/authComposable'
 
-const router = useRouter()
-
-// Estado del formulario
 const form = reactive({
   correoElectronico: '',
   password: ''
 })
 
-// Errores
 const errors = reactive({
   correoElectronico: '',
   password: ''
 })
 
-// Estados
 const loading = ref(false)
 const errorMessage = ref('')
 
-// Limpiar error específico
 function clearError(field: 'correoElectronico' | 'password') {
   errors[field] = ''
 }
 
-// Validar formulario
 function validateForm(): boolean {
   let valid = true
-  
+
   if (!form.correoElectronico.trim()) {
     errors.correoElectronico = 'El correo electrónico es obligatorio'
     valid = false
@@ -120,31 +107,28 @@ function validateForm(): boolean {
       valid = false
     }
   }
-  
+
   if (!form.password) {
     errors.password = 'La contraseña es obligatoria'
     valid = false
   }
-  
+
   return valid
 }
 
-// Manejar login
 async function handleLogin() {
   if (!validateForm()) return
-  
+
   loading.value = true
   errorMessage.value = ''
-  
+
   try {
     const isValid = await validateCredentials(form.correoElectronico, form.password)
-    
+
     if (isValid) {
-      // Crear sesión
       createSession(form.correoElectronico)
-      
-      // Redirigir a la tienda
-      router.push('/')
+
+      window.location.href = '/';
     } else {
       errorMessage.value = 'Correo electrónico o contraseña incorrectos'
     }
@@ -155,9 +139,8 @@ async function handleLogin() {
   }
 }
 
-// Redirigir si ya está logueado
 if (getCurrentSession()) {
-  router.push('/')
+  window.location.href = '/';
 }
 </script>
 

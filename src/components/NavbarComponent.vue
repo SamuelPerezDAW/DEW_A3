@@ -1,6 +1,6 @@
 <template>
   <div class="navbar-container">
-    <Menubar :model="items" class="navbar-custom">
+    <Menubar class="navbar-custom">
       <template #start>
         <RouterLink to="/" class="navbar-logo">
           <i class="pi pi-heart"></i>
@@ -9,14 +9,12 @@
       </template>
       <template #end>
         <div class="navbar-actions">
-          <!-- Carrito con badge -->
-          <RouterLink to="/cart" class="cart-link">
-            <i class="pi pi-shopping-cart"></i>
-            <span v-if="cartStore.totalItems > 0" class="cart-badge">{{ cartStore.totalItems }}</span>
-          </RouterLink>
-          
-          <!-- Usuario no logueado -->
+
           <template v-if="!isLoggedIn">
+            <RouterLink to="/cart" class="cart-link">
+              <i class="pi pi-shopping-cart"></i>
+              <span v-if="cartStore.totalItems > 0" class="cart-badge">{{ cartStore.totalItems }}</span>
+            </RouterLink>
             <RouterLink to="/login" class="auth-link">
               <i class="pi pi-user"></i>
               <span>Login</span>
@@ -26,13 +24,19 @@
               <span>Registro</span>
             </RouterLink>
           </template>
-          
-          <!-- Usuario logueado -->
+
           <template v-else>
             <span class="user-greeting">
               <i class="pi pi-user"></i>
               <span>{{ userEmail }}</span>
             </span>
+            <RouterLink to="/cart" class="cart-link">
+              <i class="pi pi-shopping-cart"></i>
+              <span v-if="cartStore.totalItems > 0" class="cart-badge">{{ cartStore.totalItems }}</span>
+            </RouterLink>
+            <RouterLink to="/purchases" class="auth-link">
+              <span>Mis compras</span>
+            </RouterLink>
             <button @click="logout" class="logout-btn">
               <i class="pi pi-sign-out"></i>
               <span>Logout</span>
@@ -54,46 +58,15 @@ import { getCurrentSession, clearSession, isAuthenticated } from '@/composables/
 const router = useRouter()
 const cartStore = useCartStore()
 
-// Inicializar store
 cartStore.init()
 
-// Verificar si está logueado
 const isLoggedIn = computed(() => isAuthenticated())
 
-// Obtener email del usuario
 const userEmail = computed(() => {
   const session = getCurrentSession()
   return session?.correoElectronico || ''
 })
 
-// Opciones del menú
-const items = computed(() => {
-  const menuItems = [
-    {
-      label: 'Tienda',
-      icon: 'pi pi-shopping-bag',
-      route: '/'
-    },
-    {
-      label: 'Carrito',
-      icon: 'pi pi-shopping-cart',
-      route: '/cart'
-    }
-  ]
-  
-  // Compras solo visible si está logueado
-  if (isLoggedIn.value) {
-    menuItems.push({
-      label: 'Mis Compras',
-      icon: 'pi pi-history',
-      route: '/purchased'
-    })
-  }
-  
-  return menuItems
-})
-
-// Logout
 function logout() {
   clearSession()
   cartStore.clearCart()

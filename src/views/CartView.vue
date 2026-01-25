@@ -8,7 +8,6 @@
     </div>
 
     <div class="cart-content">
-      <!-- Carrito vacío -->
       <div v-if="cartStore.items.length === 0" class="empty-cart">
         <i class="pi pi-shopping-cart"></i>
         <h2>Tu carrito está vacío</h2>
@@ -18,9 +17,7 @@
         </RouterLink>
       </div>
 
-      <!-- Carrito con productos -->
       <div v-else class="cart-with-items">
-        <!-- Lista de productos -->
         <div class="cart-items">
           <DataTable :value="cartStore.items" responsiveLayout="scroll">
             <Column field="nombreProducto" header="Producto">
@@ -30,48 +27,48 @@
                 </div>
               </template>
             </Column>
-            
+
             <Column field="precioUnitario" header="Precio">
               <template #body="slotProps">
                 <span class="price">{{ slotProps.data.precioUnitario.toFixed(2) }} €</span>
               </template>
             </Column>
-            
+
             <Column field="cantidad" header="Cantidad">
               <template #body="slotProps">
                 <div class="quantity-controls">
-                  <Button 
-                    icon="pi pi-minus" 
-                    text 
-                    rounded 
+                  <Button
+                    icon="pi pi-minus"
+                    text
+                    rounded
                     size="small"
                     @click="decreaseQuantity(slotProps.data.id)"
                     :disabled="slotProps.data.cantidad <= 1"
                   />
                   <span class="quantity">{{ slotProps.data.cantidad }}</span>
-                  <Button 
-                    icon="pi pi-plus" 
-                    text 
-                    rounded 
+                  <Button
+                    icon="pi pi-plus"
+                    text
+                    rounded
                     size="small"
                     @click="increaseQuantity(slotProps.data.id)"
                   />
                 </div>
               </template>
             </Column>
-            
+
             <Column field="precioUnitario" header="Subtotal">
               <template #body="slotProps">
                 <span class="subtotal">{{ (slotProps.data.precioUnitario * slotProps.data.cantidad).toFixed(2) }} €</span>
               </template>
             </Column>
-            
+
             <Column header="Acciones">
               <template #body="slotProps">
-                <Button 
-                  icon="pi pi-trash" 
-                  text 
-                  rounded 
+                <Button
+                  icon="pi pi-trash"
+                  text
+                  rounded
                   severity="danger"
                   @click="removeItem(slotProps.data.id)"
                   v-tooltip.top="'Eliminar'"
@@ -81,7 +78,6 @@
           </DataTable>
         </div>
 
-        <!-- Resumen del pedido -->
         <div class="cart-summary">
           <Card>
             <template #title>
@@ -105,16 +101,16 @@
             </template>
             <template #footer>
               <div class="summary-actions">
-                <Button 
-                  label="Cancelar" 
-                  icon="pi pi-times" 
+                <Button
+                  label="Cancelar"
+                  icon="pi pi-times"
                   severity="secondary"
                   outlined
                   @click="cancelOrder"
                 />
-                <Button 
-                  label="Pagar" 
-                  icon="pi pi-check" 
+                <Button
+                  label="Pagar"
+                  icon="pi pi-check"
                   severity="success"
                   @click="processPayment"
                   :loading="processing"
@@ -126,7 +122,6 @@
       </div>
     </div>
 
-    <!-- Toast para notificaciones -->
     <Toast position="bottom-right" />
   </div>
 </template>
@@ -147,10 +142,8 @@ const router = useRouter()
 const cartStore = useCartStore()
 const processing = ref(false)
 
-// Inicializar store
 cartStore.init()
 
-// Aumentar cantidad
 function increaseQuantity(productId: number) {
   const item = cartStore.items.find(i => i.id === productId)
   if (item) {
@@ -158,7 +151,6 @@ function increaseQuantity(productId: number) {
   }
 }
 
-// Disminuir cantidad
 function decreaseQuantity(productId: number) {
   const item = cartStore.items.find(i => i.id === productId)
   if (item && item.cantidad > 1) {
@@ -166,36 +158,27 @@ function decreaseQuantity(productId: number) {
   }
 }
 
-// Eliminar producto
 function removeItem(productId: number) {
   cartStore.removeFromCart(productId)
 }
 
-// Cancelar pedido
 function cancelOrder() {
   cartStore.clearCart()
   router.push('/')
 }
 
-// Procesar pago
 async function processPayment() {
   processing.value = true
-  
-  // Simular procesamiento
+
   await new Promise(resolve => setTimeout(resolve, 1500))
-  
-  // Guardar en historial si está logueado
+
   if (localStorage.getItem('ShopSession')) {
     cartStore.saveToHistory()
   }
-  
-  // Limpiar carrito
+
   cartStore.clearCart()
   processing.value = false
-  
-  // Mostrar toast de éxito
-  // El toast se muestra automáticamente por el componente Toast
-  
+
   router.push('/')
 }
 </script>
@@ -353,7 +336,7 @@ async function processPayment() {
   .cart-with-items {
     grid-template-columns: 1fr;
   }
-  
+
   .cart-summary {
     position: static;
   }
@@ -363,11 +346,11 @@ async function processPayment() {
   .cart-header h1 {
     font-size: 1.5rem;
   }
-  
+
   .cart-content {
     padding: 1rem;
   }
-  
+
   .summary-actions {
     flex-direction: column;
   }

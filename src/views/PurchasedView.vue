@@ -8,7 +8,6 @@
     </div>
 
     <div class="purchased-content">
-      <!-- Sin historial -->
       <div v-if="purchasedHistory.length === 0" class="empty-history">
         <i class="pi pi-shopping-bag"></i>
         <h2>No tienes compras aún</h2>
@@ -18,9 +17,7 @@
         </RouterLink>
       </div>
 
-      <!-- Historial de compras -->
       <div v-else class="history-container">
-        <!-- Resumen -->
         <div class="history-summary">
           <Card>
             <template #content>
@@ -51,7 +48,6 @@
           </Card>
         </div>
 
-        <!-- Lista de compras -->
         <div class="history-list">
           <DataTable :value="groupedHistory" responsiveLayout="scroll" sortField="fecha" :sortOrder="-1">
             <Column field="fecha" header="Fecha" sortable>
@@ -59,7 +55,7 @@
                 {{ formatDate(slotProps.data.fecha) }}
               </template>
             </Column>
-            
+
             <Column field="items" header="Productos">
               <template #body="slotProps">
                 <div class="products-list">
@@ -70,7 +66,7 @@
                 </div>
               </template>
             </Column>
-            
+
             <Column field="total" header="Total">
               <template #body="slotProps">
                 <span class="order-total">{{ slotProps.data.total.toFixed(2) }} €</span>
@@ -81,7 +77,6 @@
       </div>
     </div>
 
-    <!-- Toast -->
     <Toast position="bottom-right" />
   </div>
 </template>
@@ -100,14 +95,11 @@ import { isAuthenticated } from '@/composables/authComposable'
 const router = useRouter()
 const cartStore = useCartStore()
 
-// Obtener historial de compras como propiedad reactiva
 const purchasedHistory = computed(() => cartStore.getHistory())
 
-// Inicializar store y verificar autenticación
 onMounted(() => {
   cartStore.init()
-  
-  // Verificar si está logueado, si no redirigir al login
+
   if (!isAuthenticated()) {
     router.push('/login')
     return
@@ -115,21 +107,19 @@ onMounted(() => {
 })
 
 
-// Interfaz para grupo de historial
 interface HistoryGroup {
   fecha: string
   items: PurchaseRecord[]
   total: number
 }
 
-// Historial agrupado por fecha de compra
 const groupedHistory = computed(() => {
   const history = cartStore.getHistory()
   const groups = new Map<string, HistoryGroup>()
-  
+
   history.forEach(item => {
     const dateKey = item.fechaCompra.split('T')[0]
-    
+
     let group = groups.get(dateKey)
     if (!group) {
       group = {
@@ -139,31 +129,27 @@ const groupedHistory = computed(() => {
       }
       groups.set(dateKey, group)
     }
-    
+
     group.items.push(item)
     group.total += item.precioUnitario * item.cantidad
   })
-  
-  return Array.from(groups.values()).sort((a, b) => 
+
+  return Array.from(groups.values()).sort((a, b) =>
     new Date(b.fecha).getTime() - new Date(a.fecha).getTime()
   )
 })
 
-// Total de pedidos únicos
 const totalOrders = computed(() => groupedHistory.value.length)
 
-// Total de productos comprados
 const totalItems = computed(() => {
   const history = cartStore.getHistory()
   return history.reduce((sum, item) => sum + item.cantidad, 0)
 })
 
-// Total gastado
 const totalSpent = computed(() => {
   return groupedHistory.value.reduce((sum, group) => sum + group.total, 0)
 })
 
-// Formatear fecha
 function formatDate(dateStr: string): string {
   const date = new Date(dateStr)
   return date.toLocaleDateString('es-ES', {
@@ -331,7 +317,7 @@ function formatDate(dateStr: string): string {
   .purchased-header h1 {
     font-size: 1.5rem;
   }
-  
+
   .summary-stats {
     grid-template-columns: 1fr;
   }

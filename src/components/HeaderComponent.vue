@@ -1,9 +1,7 @@
 <template>
   <header class="header-container">
-    <!-- Banner con búsqueda -->
     <div class="header-banner">
       <div class="header-content">
-        <!-- Logo y Título -->
         <div class="header-title">
           <i class="pi pi-heart header-icon"></i>
           <div class="title-text">
@@ -11,21 +9,19 @@
             <p class="subtitle">Pasteles y Dulces Artesanales</p>
           </div>
         </div>
-        
-        <!-- Buscador de productos -->
+
         <div class="search-container">
           <span class="p-input-icon-left search-input-wrapper">
             <i class="pi pi-search search-icon"></i>
-            <InputText 
-              v-model="searchQuery" 
-              placeholder="Buscar productos..." 
+            <InputText
+              v-model="searchQuery"
+              placeholder="Buscar productos..."
               class="search-input"
               @input="onSearch"
             />
           </span>
         </div>
-        
-        <!-- Redes sociales -->
+
         <div class="social-links">
           <a href="https://facebook.com" target="_blank" class="social-link" title="Facebook">
             <i class="pi pi-facebook"></i>
@@ -42,8 +38,7 @@
         </div>
       </div>
     </div>
-    
-    <!-- Barra de navegación -->
+
     <NavbarComponent />
   </header>
 </template>
@@ -54,13 +49,11 @@ import InputText from 'primevue/inputtext'
 import NavbarComponent from './NavbarComponent.vue'
 import { getSearchQuery, setSearchQuery } from '@/composables/searchComposable'
 
-// Variable reactiva para la búsqueda (sincronizada con el composable)
 const searchQuery = computed({
   get: () => getSearchQuery(),
   set: (value) => setSearchQuery(value)
 })
 
-// Evento de búsqueda
 function onSearch() {
   // El composable actualiza el valor y ShopView puede reaccionar
 }
@@ -175,16 +168,16 @@ function onSearch() {
     flex-direction: column;
     text-align: center;
   }
-  
+
   .header-title {
     flex-direction: column;
   }
-  
+
   .search-container {
     width: 100%;
     max-width: none;
   }
-  
+
   .social-links {
     justify-content: center;
   }

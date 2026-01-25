@@ -1,32 +1,28 @@
 <template>
   <div class="product-card">
-    <!-- Imagen del producto -->
     <div class="product-image">
-      <img :src="product.rutaRelativaImagen" :alt="product.nombreProducto" @error="onImageError" />
+      <img :src="getImageUrl(product.rutaRelativaImagen)" :alt="product.nombreProducto" @error="onImageError" />
       <div class="stock-badge" :class="{ 'low-stock': product.stock < 10 }">
         <i class="pi pi-box"></i>
         {{ product.stock }} uds
       </div>
     </div>
-    
-    <!-- Información del producto -->
+
     <div class="product-info">
       <h3 class="product-name">{{ product.nombreProducto }}</h3>
       <p class="product-description">{{ product.descripcionProducto }}</p>
-      
-      <!-- Precio y stock -->
+
       <div class="product-meta">
         <span class="product-price">
           <i class="pi pi-euro"></i>
           {{ product.precioUnitario.toFixed(2) }}
         </span>
       </div>
-      
-      <!-- Botón añadir al carrito -->
+
       <div class="product-actions">
-        <Button 
-          :label="buttonLabel" 
-          icon="pi pi-cart-plus" 
+        <Button
+          :label="buttonLabel"
+          icon="pi pi-cart-plus"
           class="add-button"
           @click="addToCart"
           :disabled="product.stock === 0"
@@ -40,9 +36,10 @@
 import { ref, computed } from 'vue'
 import Button from 'primevue/button'
 
-/**
- * Interfaz de producto
- */
+const getImageUrl = (name: string) => {
+  return new URL(`${name}`, import.meta.url).href
+}
+
 export interface Product {
   id: number
   nombreProducto: string
@@ -52,32 +49,26 @@ export interface Product {
   precioUnitario: number
 }
 
-// Props del componente
 const props = defineProps<{
   product: Product
 }>()
 
-// Events emitidos
 const emit = defineEmits<{
   (e: 'add-to-cart', product: Product): void
 }>()
 
-// Contador de clics en el botón
 const clickCount = ref(0)
 
-// Label del botón con el contador
 const buttonLabel = computed(() => {
   if (clickCount.value === 0) return 'Añadir'
   return `Añadir ${clickCount.value}`
 })
 
-// Evento cuando la imagen no carga
 function onImageError(e: Event) {
   const img = e.target as HTMLImageElement
   img.src = '/assets/images/placeholder.jpg'
 }
 
-// Añadir al carrito
 function addToCart() {
   if (props.product.stock > 0) {
     clickCount.value++

@@ -1,7 +1,6 @@
 <template>
   <footer class="footer-container">
     <div class="footer-content">
-      <!-- Mapa del sitio -->
       <div class="footer-section">
         <h3 class="footer-title">
           <i class="pi pi-sitemap"></i>
@@ -11,17 +10,14 @@
           <li><RouterLink to="/"><i class="pi pi-home"></i> Inicio</RouterLink></li>
           <li><RouterLink to="/"><i class="pi pi-shopping-bag"></i> Tienda</RouterLink></li>
           <li><RouterLink to="/cart"><i class="pi pi-shopping-cart"></i> Carrito</RouterLink></li>
-          <!-- Login y Registro solo visibles si NO está logueado -->
+
           <li v-if="!isLoggedIn"><RouterLink to="/login"><i class="pi pi-user"></i> Login</RouterLink></li>
           <li v-if="!isLoggedIn"><RouterLink to="/register"><i class="pi pi-user-plus"></i> Registro</RouterLink></li>
-          <!-- Logout solo visible si está logueado -->
           <li v-if="isLoggedIn"><RouterLink to="/" @click="handleLogout"><i class="pi pi-sign-out"></i> Logout</RouterLink></li>
-          <!-- Mis Compras solo visible si está logueado -->
           <li v-if="isLoggedIn"><RouterLink to="/purchased"><i class="pi pi-history"></i> Mis Compras</RouterLink></li>
         </ul>
       </div>
-      
-      <!-- Información de contacto -->
+
       <div class="footer-section">
         <h3 class="footer-title">
           <i class="pi pi-phone"></i>
@@ -58,18 +54,17 @@
           </div>
         </div>
       </div>
-      
-      <!-- Mapa de ubicación -->
+
       <div class="footer-section">
         <h3 class="footer-title">
           <i class="pi pi-map"></i>
           Nuestra Ubicación
         </h3>
         <div class="map-container">
-          <iframe 
+          <iframe
             src="https://www.openstreetmap.org/export/embed.html?bbox=-15.43%2C28.09%2C-15.40%2C28.12&amp;layer=mapnik&amp;marker=28.10%2C-15.42"
-            width="100%" 
-            height="200" 
+            width="100%"
+            height="200"
             style="border: 0; border-radius: 8px;"
             loading="lazy"
             referrerpolicy="no-referrer-when-downgrade">
@@ -81,8 +76,7 @@
         </div>
       </div>
     </div>
-    
-    <!-- Copyright -->
+
     <div class="footer-bottom">
       <p>&copy; {{ currentYear }} Dulce Tentación. Todos los derechos reservados.</p>
       <p class="footer-made">Hecho con <i class="pi pi-heart"></i> y Vue.js</p>
@@ -99,13 +93,10 @@ import { useCartStore } from '@/stores/cartStore'
 const router = useRouter()
 const cartStore = useCartStore()
 
-// Año actual para el copyright
 const currentYear = computed(() => new Date().getFullYear())
 
-// Verificar si está logueado
 const isLoggedIn = computed(() => isAuthenticated())
 
-// Manejar logout
 function handleLogout() {
   clearSession()
   cartStore.clearCart()

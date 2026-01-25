@@ -8,19 +8,18 @@
             <h2>Crear Cuenta</h2>
           </div>
         </template>
-        
+
         <template #subtitle>
           <p>Únete a Dulce Tentación y descubre ofertas exclusivas</p>
         </template>
-        
+
         <template #content>
           <form @submit.prevent="handleRegister" class="register-form">
-            <!-- Nombre de usuario -->
             <div class="form-field">
               <label for="nombreUsuario">Nombre de Usuario</label>
-              <InputText 
+              <InputText
                 id="nombreUsuario"
-                v-model="form.nombreUsuario" 
+                v-model="form.nombreUsuario"
                 :class="{ 'p-invalid': errors.nombreUsuario }"
                 placeholder="Ej: Juan Pérez"
                 @blur="validateNombreUsuario"
@@ -28,12 +27,11 @@
               <small v-if="errors.nombreUsuario" class="p-error">{{ errors.nombreUsuario }}</small>
             </div>
 
-            <!-- Correo electrónico -->
             <div class="form-field">
               <label for="correoElectronico">Correo Electrónico</label>
-              <InputText 
+              <InputText
                 id="correoElectronico"
-                v-model="form.correoElectronico" 
+                v-model="form.correoElectronico"
                 :class="{ 'p-invalid': errors.correoElectronico }"
                 placeholder="tu@email.com"
                 @blur="validateCorreoElectronico"
@@ -41,12 +39,11 @@
               <small v-if="errors.correoElectronico" class="p-error">{{ errors.correoElectronico }}</small>
             </div>
 
-            <!-- Contraseña -->
             <div class="form-field">
               <label for="password">Contraseña</label>
-              <Password 
+              <Password
                 id="password"
-                v-model="form.password" 
+                v-model="form.password"
                 :class="{ 'p-invalid': errors.password }"
                 placeholder="Mínimo 6 caracteres, 1 mayúscula y 1 especial"
                 :feedback="false"
@@ -59,12 +56,11 @@
               </small>
             </div>
 
-            <!-- Confirmar contraseña -->
             <div class="form-field">
               <label for="confirmPassword">Confirmar Contraseña</label>
-              <Password 
+              <Password
                 id="confirmPassword"
-                v-model="form.confirmPassword" 
+                v-model="form.confirmPassword"
                 :class="{ 'p-invalid': errors.confirmPassword }"
                 placeholder="Repite tu contraseña"
                 :feedback="false"
@@ -74,22 +70,20 @@
               <small v-if="errors.confirmPassword" class="p-error">{{ errors.confirmPassword }}</small>
             </div>
 
-            <!-- Mensaje de error general -->
             <Message v-if="errorMessage" severity="error" :closable="false">
               {{ errorMessage }}
             </Message>
 
-            <!-- Botón de registro -->
-            <Button 
-              type="submit" 
-              label="Crear Cuenta" 
+            <Button
+              type="submit"
+              label="Crear Cuenta"
               icon="pi pi-check"
               class="register-button"
               :loading="loading"
             />
           </form>
         </template>
-        
+
         <template #footer>
           <div class="register-footer">
             <p>¿Ya tienes cuenta? <RouterLink to="/login">Inicia sesión</RouterLink></p>
@@ -98,14 +92,12 @@
       </Card>
     </div>
 
-    <!-- Toast para notificaciones -->
     <Toast position="bottom-right" />
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
-import { useRouter } from 'vue-router'
 import Card from 'primevue/card'
 import InputText from 'primevue/inputtext'
 import Password from 'primevue/password'
@@ -113,11 +105,8 @@ import Button from 'primevue/button'
 import Message from 'primevue/message'
 import Toast from 'primevue/toast'
 import { saveUser } from '@/composables/authComposable'
-import { validateNombreUsuario as validateNombreUsuarioFn, validateCorreoElectronico as validateCorreoElectronicoFn, validatePassword as validatePasswordFn } from '@/composables/authComposable'
+import { validateNombreUsuario as validateNombreUsuarioFn, validateCorreoElectronico as validateCorreoElectronicoFn, validatePassword as validatePasswordFn, createSession } from '@/composables/authComposable'
 
-const router = useRouter()
-
-// Estado del formulario
 const form = reactive({
   nombreUsuario: '',
   correoElectronico: '',
@@ -125,7 +114,6 @@ const form = reactive({
   confirmPassword: ''
 })
 
-// Errores
 const errors = reactive({
   nombreUsuario: '',
   correoElectronico: '',
@@ -133,11 +121,9 @@ const errors = reactive({
   confirmPassword: ''
 })
 
-// Estados
 const loading = ref(false)
 const errorMessage = ref('')
 
-// Validar nombre de usuario
 function validateNombreUsuario() {
   if (!form.nombreUsuario.trim()) {
     errors.nombreUsuario = 'El nombre de usuario es obligatorio'
@@ -148,7 +134,6 @@ function validateNombreUsuario() {
   }
 }
 
-// Validar correo electrónico
 function validateCorreoElectronico() {
   if (!form.correoElectronico.trim()) {
     errors.correoElectronico = 'El correo electrónico es obligatorio'
@@ -159,7 +144,6 @@ function validateCorreoElectronico() {
   }
 }
 
-// Validar contraseña
 function validatePassword() {
   if (!form.password) {
     errors.password = 'La contraseña es obligatoria'
@@ -170,7 +154,6 @@ function validatePassword() {
   }
 }
 
-// Validar confirmación de contraseña
 function validateConfirmPassword() {
   if (!form.confirmPassword) {
     errors.confirmPassword = 'Confirma tu contraseña'
@@ -181,36 +164,34 @@ function validateConfirmPassword() {
   }
 }
 
-// Validar todo el formulario
 function validateForm(): boolean {
   validateNombreUsuario()
   validateCorreoElectronico()
   validatePassword()
   validateConfirmPassword()
-  
-  return !errors.nombreUsuario && 
-         !errors.correoElectronico && 
-         !errors.password && 
+
+  return !errors.nombreUsuario &&
+         !errors.correoElectronico &&
+         !errors.password &&
          !errors.confirmPassword
 }
 
-// Manejar registro
 async function handleRegister() {
   if (!validateForm()) return
-  
+
   loading.value = true
   errorMessage.value = ''
-  
+
   try {
     const success = await saveUser({
       nombreUsuario: form.nombreUsuario,
       correoElectronico: form.correoElectronico,
       password: form.password
     })
-    
+
     if (success) {
-      // Redirigir al login
-      router.push('/login')
+      createSession(form.correoElectronico)
+      window.location.href = '/';
     } else {
       errorMessage.value = 'Ya existe una cuenta con este correo electrónico'
     }
