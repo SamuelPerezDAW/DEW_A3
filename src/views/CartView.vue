@@ -13,7 +13,7 @@
         <h2>Tu carrito está vacío</h2>
         <p>¡Añade algunos productos deliciosos!</p>
         <RouterLink to="/" class="continue-shopping">
-          <Button label="Volver a la Tienda" icon="pi pi-arrow-left" />
+          <Button label="Volver a la Tienda" icon="pi pi-arrow-left" style="backgroundColor: #8e44ad"/>
         </RouterLink>
       </div>
 
@@ -42,6 +42,7 @@
                     text
                     rounded
                     size="small"
+                    style="color: #8e44ad"
                     @click="decreaseQuantity(slotProps.data.id)"
                     :disabled="slotProps.data.cantidad <= 1"
                   />
@@ -51,6 +52,7 @@
                     text
                     rounded
                     size="small"
+                    style="color: #8e44ad"
                     @click="increaseQuantity(slotProps.data.id)"
                   />
                 </div>
@@ -111,9 +113,9 @@
                 <Button
                   label="Pagar"
                   icon="pi pi-check"
-                  severity="success"
                   @click="processPayment"
                   :loading="processing"
+                  style="backgroundColor: #8e44ad"
                 />
               </div>
             </template>

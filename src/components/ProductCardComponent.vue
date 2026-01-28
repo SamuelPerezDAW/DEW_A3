@@ -113,7 +113,7 @@ function addToCart() {
   position: absolute;
   top: 10px;
   right: 10px;
-  background: rgba(46, 204, 113, 0.9);
+  background: rgba(155, 74, 155, 0.9);
   color: white;
   padding: 0.3rem 0.6rem;
   border-radius: 20px;

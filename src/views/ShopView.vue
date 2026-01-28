@@ -16,6 +16,8 @@
         <Dropdown
           v-model="selectedCategory"
           :options="categories"
+          option-label="name"
+          variant="filled"
           placeholder="Todas las categorías"
           showClear
           class="filter-dropdown"
@@ -93,11 +95,11 @@ watch(() => getSearchQuery(), (newValue) => {
   searchQuery.value = newValue
 })
 
-const categories = [
-  { label: 'Dulces Tradicionales', value: 'tradicional' },
-  { label: 'Tartas', value: 'tarta' },
-  { label: ' Magdalenas y Repostería', value: 'reposteria' }
-]
+const categories = ref([
+  { name: 'Dulces Tradicionales', code: 'tradicional' },
+  { name: 'Tartas', code: 'tarta' },
+  { name: ' Magdalenas y Repostería', code: 'reposteria' }
+])
 
 const filteredProducts = computed(() => {
   let result = products.value
