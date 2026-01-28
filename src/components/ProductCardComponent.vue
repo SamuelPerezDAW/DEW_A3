@@ -1,7 +1,7 @@
 <template>
   <div class="product-card">
     <div class="product-image">
-      <img :src="getImageUrl(product.rutaRelativaImagen)" :alt="product.nombreProducto" @error="onImageError" />
+      <img :src="product.rutaRelativaImagen" :alt="product.nombreProducto" @error="onImageError" />
       <div class="stock-badge" :class="{ 'low-stock': product.stock < 10 }">
         <i class="pi pi-box"></i>
         {{ product.stock }} uds
@@ -35,10 +35,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import Button from 'primevue/button'
-
-const getImageUrl = (name: string) => {
-  return new URL(`${name}`, import.meta.url).href
-}
 
 export interface Product {
   id: number
